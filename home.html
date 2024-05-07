@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatePass</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("bg.jpeg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="time"],
+        input[type="date"],
+        input[type="file"],
+        textarea {
+            width: calc(100% - 12px);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="time"],
+        input[type="date"],
+        textarea {
+            min-height: 40px;
+        }
+
+        input[type="file"] {
+            padding: 5px 0;
+        }
+
+        button {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: #4caf50;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table td {
+            padding: 5px;
+        }
+
+        h2 {
+            text-align: left;
+            font-size: 30px;
+        }
+
+        img {
+            width: 147px;
+            height: 118px;
+        }
+
+        #header-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #header-container h1 {
+            margin: 0;
+        }
+
+        #purpose {
+            padding: 5px 0;
+        }
+
+        #photo {
+            border: none;
+            width: 180px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                max-width: 90%;
+            }
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-storage.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form id="gatepassForm" action="#" method="POST">
+
+            <div id="header-container">
+                <img src="Picsart_24-05-01_15-03-08-858.png" alt="">
+                <h2>Smart Visitor Management System</h2>
+            </div>
+            <table>
+                <tr>
+                    <td><input type="text" name="name" id="name" placeholder="Name" required></td>
+                    <td><input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$"
+                            placeholder="Email" required></td>
+                </tr>
+                <tr>
+                    <td><input type="tel" id="phone" name="phone" maxlength="10" required placeholder="Phone No"></td>
+                    <td><input type="text" name="company_name" id="company_name" placeholder="Company Name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="intime">&nbsp; In Time</label><input type="time" id="intime" name="intime" required>
+                    </td>
+                    <td><label for="outtime">&nbsp; Out
+                            Time</label><input type="time" id="outtime" name="outtime" required></td>
+                </tr>
+                <tr>
+                    <td><input type="date" id="date" name="date" required></td>
+                    <td><input type="text" id="aadhar" name="aadhar" maxlength="12" required placeholder="Aadhar No">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><textarea id="address" name="address" rows="3" cols="44" required
+                            placeholder="Address"></textarea></td>
+                </tr>
+                <tr>
+                    <td align="right"> <select id="purpose" name="purpose" required>
+                            <option value="" disabled selected>Select Purpose</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="visit">Visitor</option>
+                            <option value="official">Official</option>
+                            <option value="other">Other</option>
+
+                        </select></td>
+                    <td><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <button type="submit" onclick="uploadImage()">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDObBm-I1SWSlg34ynQoNrKSS_EPNe6xqk",
+        authDomain: "pgp-gatepass-16636.firebaseapp.com",
+        projectId: "pgp-gatepass-16636",
+        storageBucket: "pgp-gatepass-16636.appspot.com",
+        messagingSenderId: "472872234939",
+        appId: "1:472872234939:web:2f1d64a8b1dd2cb4c7de9e",
+        measurementId: "G-EWB7GHG3MF"
+    };
+
+    // Initialize Firebase
+    const firebaseApp = initializeApp(firebaseConfig);
+    const database = getDatabase(firebaseApp);
+    const messagesRef = ref(database, 'Collected Data');
+
+    // Add form submission event listener
+    document.getElementById('gatepassForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            company_name: document.getElementById('company_name').value,
+            outtime: document.getElementById('outtime').value,
+            intime: document.getElementById('intime').value,
+            phone: document.getElementById('phone').value,
+            date: document.getElementById('date').value,
+            aadhar: document.getElementById('aadhar').value,
+            purpose: document.getElementById('purpose').value,
+            photo: document.getElementById('photo').value
+        };
+
+        // Push the form data to Firebase
+        push(messagesRef, formData)
+            .then(() => {
+                // Reset form after successful submission
+                document.getElementById('gatepassForm').reset();
+                alert('Form submitted successfully!');
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+    })
+    function uploadImage() {
+        const storage = getStorage(firebaseApp); // Correct way to get a reference to the storage bucket
+        const storageRef = ref(storage); // Get reference to the root of the storage bucket
+        const file = document.querySelector("#photo").files[0];
+        const name = +new Date() + "-" + file.name;
+        const metadata = {
+            contentType: file.type
+        };
+        const uploadTask = uploadBytesResumable(storageRef.child(name), file, metadata); // Use uploadBytesResumable method to upload files
+
+        uploadTask.then((snapshot) => {
+            return getDownloadURL(snapshot.ref); // Use getDownloadURL method to get the download URL of the uploaded file
+        }).then((url) => {
+            console.log(url);
+            alert('Image uploaded successfully');
+            // You can include the URL in your form data to store in the database if needed
+            document.getElementById('photo').value = url;
+        }).catch((error) => {
+            console.error("Error uploading image: ", error);
+        });
+    }
+
+
+    // Add an event listener to the form to call uploadImage function when the form is submitted
+    document.getElementById('gatepassForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+        uploadImage(); // Call uploadImage function to upload the image before submitting the form
+        // After the image is uploaded, the form will be submitted with the updated photo URL
+        this.submit();
+    });
+</script>
+
+
+</html>
