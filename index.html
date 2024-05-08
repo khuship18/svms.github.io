@@ -26,6 +26,7 @@
         }
 
         .container {
+            width: 90%;
             max-width: 680px;
             margin: 50px auto;
             padding: 20px;
@@ -40,7 +41,8 @@
         input[type="time"],
         input[type="date"],
         input[type="file"],
-        textarea {
+        textarea,
+        select {
             width: calc(100% - 12px);
             padding: 10px;
             margin: 5px 0;
@@ -71,7 +73,6 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
-
         }
 
         button:hover {
@@ -93,8 +94,10 @@
         }
 
         img {
-            width: 147px;
-            height: 118px;
+            width: 100%;
+            height: auto;
+            max-width: 147px;
+            max-height: 118px;
         }
 
         #header-container {
@@ -102,22 +105,25 @@
             align-items: center;
         }
 
-        #header-container h1 {
-            margin: 0;
+        #header-container h2 {
+            margin-left: 10px;
         }
 
         #purpose {
             padding: 5px 0;
+            width: 100%;
         }
 
         #photo {
             border: none;
-            width: 180px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         @media screen and (max-width: 600px) {
             .container {
-                max-width: 90%;
+                width: 100%;
+                margin: 20px auto;
             }
         }
     </style>
@@ -161,19 +167,22 @@
                             placeholder="Address"></textarea></td>
                 </tr>
                 <tr>
-                    <td align="right"> <select id="purpose" name="purpose" required>
+                    <td colspan="2">
+                        <select id="purpose" name="purpose" required>
                             <option value="" disabled selected>Select Purpose</option>
                             <option value="Meeting">Meeting</option>
                             <option value="visit">Visitor</option>
                             <option value="official">Official</option>
                             <option value="other">Other</option>
-
-                        </select></td>
-                    <td><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></td>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <button type="submit" onclick="uploadImage()">Submit</button>
+                        <button type="submit">Submit</button>
                     </td>
                 </tr>
             </table>
@@ -184,7 +193,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-    import { getStorage } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
+    import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDObBm-I1SWSlg34ynQoNrKSS_EPNe6xqk",
@@ -261,6 +270,5 @@
         this.submit();
     });
 </script>
-
 
 </html>
