@@ -67,7 +67,7 @@
         }
         
         #otherPurpose {
-            display: none;
+            visibility:hidden;
         }
 
         button {
@@ -186,7 +186,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></td>
+                    <td colspan="2">
+                        <center><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></center>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -252,10 +254,10 @@
     })
     function showOtherInput(select) {
         const otherInput = document.getElementById('otherPurpose');
-        if (select.value === 'other') {
-            otherInput.style.display = 'block';
+        if (select.value === "other" ) {
+            otherInput.style.visibility = 'visible'
         } else {
-            otherInput.style.display = 'none';
+            otherInput.style.visibility = 'hidden';
             otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
         }
     }
