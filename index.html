@@ -255,14 +255,14 @@
 function showOtherInput(select) {
     // get the Other Purpose input field
     var otherInput = document.getElementById('otherPurpose');
-    console.log('in fun');
+    // console.log('in fun');
     // toggle the visibility of the Other Purpose input field based on the selected value
-    if (select.value === "other" ) {
-        console.log('block');
-        otherInput.style.display = "block";
+    if (select.value === 'other' ) {
+        // console.log('block');
+        otherInput.style.display = 'block';
     } else {
         console.log('none');
-        otherInput.style.display = 'none';
+        // otherInput.style.display = 'none';
         otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
     }
 }
