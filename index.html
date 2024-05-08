@@ -67,7 +67,7 @@
         }
         
         #otherPurpose {
-            visibility:hidden;
+            display:none;
         }
 
         button {
@@ -175,8 +175,8 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <select id="purpose" name="purpose" required onchange="showOtherInput(this)">
-                            <option value="" disabled selected>Select Purpose</option>
+                        <select id="purpose" name="purpose" required onchange="showOtherInput(this)" placeholder="Purpose">
+<!--                             <option value="" disabled selected>Select Purpose</option> -->
                             <option value="Meeting">Meeting</option>
                             <option value="visit">Visitor</option>
                             <option value="official">Official</option>
@@ -187,7 +187,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <center><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></center>
+                        <input type="file" id="photo" name="photo" accept="image/*" capture="camera" required>
                     </td>
                 </tr>
                 <tr>
@@ -237,7 +237,7 @@
             purpose: document.getElementById('purpose').value,
             photo: document.getElementById('photo').value
         };
-                if (formData.purpose === 'other') {
+                if (formData.purpose == 'other') {
             formData.otherPurpose = document.getElementById('otherPurpose').value;
         }
 
@@ -254,10 +254,10 @@
     })
     function showOtherInput(select) {
         const otherInput = document.getElementById('otherPurpose');
-        if (select.value === "other" ) {
-            otherInput.style.visibility = 'visible'
+        if (select.value == "other" ) {
+            otherInput.style.display = 'block';
         } else {
-            otherInput.style.visibility = 'hidden';
+            otherInput.style.display = 'none';
             otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
         }
     }
