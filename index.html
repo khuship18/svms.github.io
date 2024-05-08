@@ -175,8 +175,9 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <select id="purpose" name="purpose" required placeholder="Purpose" onchange="showOtherInput(this)" >
-<!--                             <option value="" disabled selected>Select Purpose</option> -->
+                        <select id="purpose" name="purpose" required placeholder="Purpose"  >
+<!--                             onchange="showOtherInput(this)" -->
+                            <option value="" disabled selected>Select Purpose</option>
                             <option value="Meeting">Meeting</option>
                             <option value="visit">Visitor</option>
                             <option value="official">Official</option>
@@ -254,20 +255,20 @@
                 console.error("Error adding document: ", error);
             });
     })
-function showOtherInput(select) {
-    // get the Other Purpose input field
-    var otherInput = document.getElementById('otherPurpose');
-    // console.log('in fun');
-    // toggle the visibility of the Other Purpose input field based on the selected value
-    if (select.value === 'other' ) {
-        // console.log('block');
-        otherInput.style.display = 'block';
-    } else {
-        console.log('none');
-        // otherInput.style.display = 'none';
-        otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
-    }
-}
+// function showOtherInput(select) {
+//     // get the Other Purpose input field
+//     var otherInput = document.getElementById('otherPurpose');
+//     // console.log('in fun');
+//     // toggle the visibility of the Other Purpose input field based on the selected value
+//     if (select.value === 'other' ) {
+//         // console.log('block');
+//         otherInput.style.display = 'block';
+//     } else {
+//         console.log('none');
+//         // otherInput.style.display = 'none';
+//         otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
+//     }
+// }
     function uploadImage() {
         const storage = getStorage(firebaseApp); // Correct way to get a reference to the storage bucket
         const storageRef = ref(storage); // Get reference to the root of the storage bucket
