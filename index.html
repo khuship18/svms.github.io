@@ -171,22 +171,22 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <select id="purpose" name="purpose" required>
+                        <select id="purpose" name="purpose" required onchange="showOtherInput(this)">
                             <option value="" disabled selected>Select Purpose</option>
                             <option value="Meeting">Meeting</option>
                             <option value="visit">Visitor</option>
                             <option value="official">Official</option>
                             <option value="other">Other</option>
                         </select>
-<!--                         <input type="text" id="otherPurpose" name="otherPurpose" placeholder="Enter Other Purpose"> -->
+                        <input type="text" id="otherPurpose" name="otherPurpose" placeholder="Enter Other Purpose">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2"><input type="file" id="photo" name="photo" accept="image/*" capture="camera" required></td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">
-                        <button type="submit">Submit</button>
+                    <td colspan="2">
+                        <center><button type="submit">Submit</button></center>
                     </td>
                 </tr>
             </table>
@@ -246,16 +246,15 @@
                 console.error("Error adding document: ", error);
             });
     })
-    //     function showOtherInput(select) {
-    //     const otherInput = document.getElementById('otherPurpose');
-    //     if (select.value === 'other') {
-    //         otherInput.style.display = 'block';
-    //     } else {
-    //         otherInput.style.display = 'none';
-    //         otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
-    //     }
-    // }
-    
+    function showOtherInput(select) {
+        const otherInput = document.getElementById('otherPurpose');
+        if (select.value === 'other') {
+            otherInput.style.display = 'block';
+        } else {
+            otherInput.style.display = 'none';
+            otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
+        }
+    }
     function uploadImage() {
         const storage = getStorage(firebaseApp); // Correct way to get a reference to the storage bucket
         const storageRef = ref(storage); // Get reference to the root of the storage bucket
