@@ -126,6 +126,7 @@
             .container {
                 width: 80%;
                 margin: 20px auto;
+                height: 80%;
             }
         }
     </style>
@@ -177,6 +178,7 @@
                             <option value="official">Official</option>
                             <option value="other">Other</option>
                         </select>
+                        <input type="text" id="otherPurpose" name="otherPurpose" placeholder="Enter Other Purpose">
                     </td>
                 </tr>
                 <tr>
@@ -229,6 +231,9 @@
             purpose: document.getElementById('purpose').value,
             photo: document.getElementById('photo').value
         };
+                if (formData.purpose === 'other') {
+            formData.otherPurpose = document.getElementById('otherPurpose').value;
+        }
 
         // Push the form data to Firebase
         push(messagesRef, formData)
@@ -241,6 +246,16 @@
                 console.error("Error adding document: ", error);
             });
     })
+        function showOtherInput(select) {
+        const otherInput = document.getElementById('otherPurpose');
+        if (select.value === 'other') {
+            otherInput.style.display = 'block';
+        } else {
+            otherInput.style.display = 'none';
+            otherInput.value = ''; // Clear the input if the user switches from "Other" to another option
+        }
+    }
+    
     function uploadImage() {
         const storage = getStorage(firebaseApp); // Correct way to get a reference to the storage bucket
         const storageRef = ref(storage); // Get reference to the root of the storage bucket
