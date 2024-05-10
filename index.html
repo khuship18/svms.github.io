@@ -246,7 +246,31 @@
                 if (formData.purpose == 'other') {
             formData.otherPurpose = document.getElementById('otherPurpose').value;
         }
+onValue(messagesRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+        Object.keys(data).forEach((key) => {
+            const entry = data[key];
+            const newName = entry.name; // Assuming "name" is the field containing the desired name
 
+            // Update the key (entry name) to be the same as the "name" field
+            if (newName) {
+                if (key !== newName) {
+                    const updates = {};
+                    updates[newName] = entry; // Update the entry with the new name
+                    updates[key] = null; // Remove the old entry
+                    update(messagesRef, updates)
+                        .then(() => {
+                            console.log(`Entry ${key} renamed to ${newName}`);
+                        })
+                        .catch((error) => {
+                            console.error(`Error renaming entry ${key}: ${error}`);
+                        });
+                }
+            }
+        });
+    }
+});
         // Push the form data to Firebase
         push(messagesRef, formData)
             .then(() => {
